@@ -65,6 +65,8 @@ public class TelBookRepository {
                 psmt.close();
                 dtoList.add(dto);
             }
+            psmt.close();
+            rs.close();
         } catch (Exception e) {
             System.out.println("Find ALL Error : " + e.getMessage());
         }
@@ -90,6 +92,8 @@ public class TelBookRepository {
                 dto.setTelNumber(rs.getString("phone"));
                 dtoList.add(dto);
             }
+            psmt.close();
+            rs.close();
         } catch (Exception e) {
             System.out.println("FindById Error : " + e.getMessage());
         }
