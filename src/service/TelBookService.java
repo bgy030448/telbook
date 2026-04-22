@@ -30,4 +30,8 @@ public class TelBookService {
     public List<TelDto> getListOne(int id) {
         return repository.findById(id);
     }
+
+    public int delete(int id) {
+        return repository.deleteById(id);
+    }
 }
