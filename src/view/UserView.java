@@ -5,6 +5,7 @@ import exception.InputValidation;
 import exception.MyException;
 import service.TelBookService;
 
+import java.security.Provider;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -100,5 +101,13 @@ public class UserView {
     }
 
     public void searchOne() {
+        System.out.println("검색할 ID : ");
+        int id = scanner.nextInt();
+        List<TelDto> list = service.getListOne(id);
+        if(list.isEmpty()){
+            System.out.println("해당 ID가 없습니다.");
+        } else {
+            list.forEach(x -> System.out.println(x));
+        }
     }
 }
