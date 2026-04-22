@@ -1,13 +1,14 @@
 package dto;
 
-public class TelDTO {
+public class TelDto {
     private Long id; // 4L
     private String name;
     private int age;
     private String address;
     private String telNumber;
 
-    public TelDTO(Long id, String name, int age, String telNumber, String address) {
+    public TelDto(){}
+    public TelDto(Long id, String name, int age, String telNumber, String address) {
         this.id = id;
         this.name = name;
         this.age = age;
@@ -17,6 +18,10 @@ public class TelDTO {
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id){
+        this.id = id;
     }
 
     public String getName() {
@@ -53,7 +58,7 @@ public class TelDTO {
 
     @Override
     public String toString() {
-        return "TelDTO{" +
+        return "TelDto{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", age=" + age +
