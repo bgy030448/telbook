@@ -12,9 +12,10 @@ public class TelBookRepository {
     // 1. DB 연결
     private final Connection conn;
 
-    public TelBookRepository(Connection conn){
+    public TelBookRepository(Connection conn) {
         this.conn = conn;
     }
+
     public int insertData(TelDto dto) {
 
         PreparedStatement psmt = null;
@@ -34,7 +35,7 @@ public class TelBookRepository {
         } catch (Exception e) {
             System.out.println("INSERT 오류 : " + e.getMessage());
         }
-       return result;
+        return result;
     }
 
     public List<TelDto> findAll() {
@@ -51,7 +52,7 @@ public class TelBookRepository {
             rs = psmt.executeQuery();
             // 받은 결과를 DTO List에 차곡차곡 담는다.
             // rs.next() : 다음 레코드가 있니?
-            while (rs.next()){
+            while (rs.next()) {
                 // 읽어온 레코드를 담을 빈 DTO를 생성
                 TelDto dto = new TelDto();
                 dto.setId(rs.getLong("id"));
@@ -64,6 +65,8 @@ public class TelBookRepository {
                 psmt.close();
                 dtoList.add(dto);
             }
+            psmt.close();
+            rs.close();
         } catch (Exception e) {
             System.out.println("Find ALL Error : " + e.getMessage());
         }
@@ -80,7 +83,7 @@ public class TelBookRepository {
             psmt.setLong(1, id);
             rs = psmt.executeQuery();
             //리스트에 추가
-            while (rs.next()){
+            while (rs.next()) {
                 TelDto dto = new TelDto();
                 dto.setId(rs.getLong("id"));
                 dto.setName(rs.getString("name"));
@@ -89,10 +92,27 @@ public class TelBookRepository {
                 dto.setTelNumber(rs.getString("phone"));
                 dtoList.add(dto);
             }
+            psmt.close();
+            rs.close();
         } catch (Exception e) {
             System.out.println("FindById Error : " + e.getMessage());
         }
         return dtoList;
+    }
+
+    public int deleteById(int id) {
+        PreparedStatement psmt = null;
+        int result = 0;
+        try {
+            String sql = "DELETE FROM telbook WHERE id =?";
+            psmt = conn.prepareStatement(sql);
+            psmt.setInt(1, id);
+            result = psmt.executeUpdate();
+            psmt.close();
+        } catch (Exception e) {
+            System.out.println("DELETE 오류 : " + e.getMessage());
+        }
+        return result;
     }
 }
 
