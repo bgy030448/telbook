@@ -78,9 +78,9 @@ public class TelBookRepository {
         PreparedStatement psmt = null;
         ResultSet rs = null;
         try {
-            String sql = "SELECT * FROM telbook WHERE id = ?";
+            String sql = "SELECT * FROM telbook WHERE  id = ?"; // 여기서 like 찾고 해결해 보기
             psmt = conn.prepareStatement(sql);
-            psmt.setLong(1, id);
+            psmt.setLong(1, id); //%서울% 이런 건 여기서 출력됨
             rs = psmt.executeQuery();
             //리스트에 추가
             while (rs.next()) {
@@ -138,6 +138,41 @@ public class TelBookRepository {
         } catch (Exception e) {
             System.out.println("INSERT 오류 : " + e.getMessage());
         }
+    }
+
+    public List<TelDto> search(int choice, String keyword) {
+        List<TelDto> dtoList = new ArrayList<>();
+        PreparedStatement psmt = null;
+        ResultSet rs = null;
+        String sql = "";
+        try {
+            if (choice == 1) {
+                // 이름 검색
+                sql = "SELECT * FROM telbook WHERE name LIKE ?";
+            } else {
+                // 주소 검색
+                sql = "SELECT * FROM telbook WHERE address LIKE ?";
+            }
+
+            psmt = conn.prepareStatement(sql);
+            psmt.setString(1, "%" + keyword + "%");
+            rs = psmt.executeQuery();
+            // 리스트에 추가
+            while (rs.next()) {
+                TelDto dto = new TelDto();
+                dto.setId(rs.getLong("id"));
+                dto.setName(rs.getString("name"));
+                dto.setAge(rs.getInt("age"));
+                dto.setAddress(rs.getString("address"));
+                dto.setTelNumber(rs.getString("phone"));
+                dtoList.add(dto);
+            }
+            psmt.close();
+            rs.close();
+        } catch (Exception e) {
+            System.out.println("Search Error : " + e.getMessage());
+        }
+        return dtoList;
     }
 }
 
